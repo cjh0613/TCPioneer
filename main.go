@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"./header"
+	"github.com/Macronut/TCPioneer/header"
 	"github.com/chai2010/winsvc"
 )
 
@@ -54,6 +54,12 @@ func StartService() {
 		tcpioneer.LogLevel = 1
 	}
 
+	if ScanIPRange != "" {
+		tcpioneer.DetectEnable = true
+		tcpioneer.ScanURL = ScanURL
+		tcpioneer.ScanTimeout = ScanTimeout
+	}
+
 	tcpioneer.TCPDaemon(":443", false)
 	tcpioneer.TCPDaemon(":80", false)
 	tcpioneer.UDPDaemon(443, false)
@@ -74,9 +80,6 @@ func StartService() {
 	}
 
 	if ScanIPRange != "" {
-		tcpioneer.ScanURL = ScanURL
-		tcpioneer.ScanTimeout = ScanTimeout
-
 		go tcpioneer.Scan(ScanIPRange, ScanSpeed)
 	}
 
